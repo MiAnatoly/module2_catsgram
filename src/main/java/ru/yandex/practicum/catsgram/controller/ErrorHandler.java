@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.catsgram.exception.*;
+import ru.yandex.practicum.catsgram.model.ErrorResponse;
 
 import java.util.Map;
 
@@ -18,37 +19,37 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleIncorrectParameterException(final IncorrectParameterException e) {
-        return Map.of("error", e.getParameter());
+    public ErrorResponse handleIncorrectParameterException(final IncorrectParameterException e) {
+        return new ErrorResponse("Ошибка с полем " + e.getParameter());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleInvalidEmail(final InvalidEmailException e) {
-        return Map.of("error", e.getMessage());
+    public ErrorResponse handleInvalidEmail(final InvalidEmailException e) {
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handlePostNotFound(final PostNotFoundException e) {
-        return Map.of("error", e.getMessage());
+    public ErrorResponse handlePostNotFound(final PostNotFoundException e) {
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleUserNotFound(final UserNotFoundException e) {
-        return Map.of("error", e.getMessage());
+    public ErrorResponse handleUserNotFound(final UserNotFoundException e) {
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, String> handleUserAlready(final UserAlreadyExistException e) {
-        return Map.of("error", e.getMessage());
+    public ErrorResponse handleUserAlready(final UserAlreadyExistException e) {
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handle(final RuntimeException e) {
-        return Map.of("error", e.getMessage());
+    public ErrorResponse handle(final RuntimeException e) {
+        return new ErrorResponse(e.getMessage());
     }
 }
